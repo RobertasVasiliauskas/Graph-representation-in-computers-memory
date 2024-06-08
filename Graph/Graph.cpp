@@ -90,19 +90,26 @@ void Graph::generateRandomGraph(int vertices, float density) {
     initializeGraph(vertices);
 
     int maxEdges = isDirected ? numberOfVertices * (numberOfVertices - 1) : vertices * (vertices - 1) / 2;
-    int edges = isDirected ? static_cast<int>((float)maxEdges * (density / 100 / 2)) :
-                static_cast<int>((float)maxEdges * (density / 100));
 
-    this->numberOfEdges = edges;
+    if ((int) density != 99) {
+        int edges = isDirected ? static_cast<int>((float) maxEdges * (density / 100 / 2)) :
+                    static_cast<int>((float) maxEdges * (density / 100));
 
-    addInitialEdges();
-    addRandomEdges(edges - (numberOfVertices - 1));
+        this->numberOfEdges = edges;
+
+        addInitialEdges();
+        addRandomEdges(edges - (numberOfVertices - 1));
+    } else {
+        createFullGraph(vertices, maxEdges);
+        int edgesToRemove = static_cast<int>(maxEdges * 0.01);
+        removeRandomEdges(edgesToRemove);
+    }
 }
 
 void Graph::printList() const {
     for (int i = 0; i < numberOfVertices; ++i) {
         std::cout << i << " -> ";
-        for (const auto& edge : adjList[i]) {
+        for (const auto &edge: adjList[i]) {
             std::cout << "(" << edge.first << ", " << edge.second << ") ";
         }
         std::cout << std::endl;
@@ -146,5 +153,70 @@ int Graph::getNumberOfVertices() const {
     return numberOfVertices;
 }
 
+void Graph::createFullGraph(int vertices, int maxEdges) {
+    int edges = maxEdges;
+    this->numberOfEdges = edges;
 
+    for (int i = 0; i < vertices; ++i) {
+        for (int j = (isDirected ? 0 : i + 1); j < vertices; ++j) {
+            if (i != j) {
+                int value = Utilities::generateRandomNumber(0, 1000);
+                addEdge(i, j, value);
+                connections[i][j] = false;
+            }
+        }
+    }
+}
 
+void Graph::removeRandomEdges(int edgesToRemove) {
+    int removedEdges = 0;
+    std::vector<std::pair<int, int>> edgeList;
+
+    for (int i = 0; i < numberOfVertices; ++i) {
+        for (int j = 0; j < numberOfVertices; ++j) {
+            if (!connections[i][j]) {
+                edgeList.emplace_back(i, j);
+            }
+        }
+    }
+
+    while (removedEdges < edgesToRemove && !edgeList.empty()) {
+        int randomIndex = Utilities::generateRandomNumber(0, edgeList.size());
+        std::pair<int, int> edge = edgeList[randomIndex];
+
+        removeEdge(edge.first, edge.second);
+        //std::cout << "Removed: " << removedEdges << " From: "<< edgesToRemove << std::endl;
+
+        edgeList.erase(edgeList.begin() + randomIndex);
+
+        ++removedEdges;
+    }
+}
+
+void Graph::removeEdge(int vertexOne, int vertexTwo) {
+
+    auto &edgesFromVertexOne = adjList[vertexOne];
+    for (auto it = edgesFromVertexOne.begin(); it != edgesFromVertexOne.end(); ++it) {
+        if (it->first == vertexTwo) {
+            edgesFromVertexOne.erase(it);
+            break;
+        }
+    }
+    matrix[vertexOne][vertexTwo] = 0;
+
+    if (!isDirected) {
+        auto &edgesFromVertexTwo = adjList[vertexTwo];
+        for (auto it = edgesFromVertexTwo.begin(); it != edgesFromVertexTwo.end(); ++it) {
+            if (it->first == vertexOne) {
+                edgesFromVertexTwo.erase(it);
+                break;
+            }
+        }
+        matrix[vertexTwo][vertexOne] = 0;
+    }
+
+    connections[vertexOne][vertexTwo] = true;
+    if (!isDirected) {
+        connections[vertexTwo][vertexOne] = true;
+    }
+}

@@ -9,8 +9,20 @@
 
 class Kruskal {
 public:
+    /**
+     * Kruskal algorithm for undirected graphs represented as list
+     * @param graph graph to run algorithm on it
+     * @param writing writing mode for gui
+     */
     virtual void kruskalAlgorithm(Graph &graph, bool writing);
+
+    /**
+     * Kruskal algorithm for undirected graphs represented as incidence matrix
+     * @param graph graph to run algorithm on it
+     * @param writing writing mode for gui
+     */
     virtual void kruskalAlgorithmMatrix(Graph &graph, bool writing);
+
 private:
 };
 

@@ -1,4 +1,5 @@
 #include <stack>
+#include <limits>
 #include "FordBellman.h"
 
 void FordBellman::findShortestPathList(Graph &graph, int startVertex, int endVertex, bool writing) {
@@ -28,17 +29,21 @@ void FordBellman::findShortestPathList(Graph &graph, int startVertex, int endVer
 
 
     if (writing) {
-        std::cout << "Vertex distance from " << startVertex << " to " << endVertex << " (Adjacency List): "
-                  << distance[endVertex] << "\nPath: ";
-        while (!path.empty()) {
-            if (path.size() > 1) {
-                std::cout << path.top() << " -> ";
-            } else {
-                std::cout << path.top();
+        if (distance[endVertex] != std::numeric_limits<int>::max()) {
+            std::cout << "Vertex distance from " << startVertex << " to " << endVertex << " (Adjacency List): "
+                      << distance[endVertex] << "\nPath: ";
+            while (!path.empty()) {
+                if (path.size() > 1) {
+                    std::cout << path.top() << " -> ";
+                } else {
+                    std::cout << path.top();
+                }
+                path.pop();
             }
-            path.pop();
+            std::cout << "\n";
+        } else {
+            std::cout << "Path not specified" << std::endl;
         }
-        std::cout << "\n";
     }
 }
 
@@ -62,22 +67,27 @@ void FordBellman::findShortestPathMatrix(Graph &graph, int startVertex, int endV
             }
         }
     }
+
     std::stack<int> path;
     for (int at = endVertex; at != -1; at = predecessor[at]) {
         path.push(at);
     }
 
     if (writing) {
-        std::cout << "Vertex distance from " << startVertex << " to " << endVertex << " (Incendency matrix): "
-                  << distance[endVertex] << "\nPath: ";
-        while (!path.empty()) {
-            if (path.size() > 1) {
-                std::cout << path.top() << " -> ";
-            } else {
-                std::cout << path.top();
+        if (distance[endVertex] != std::numeric_limits<int>::max()) {
+            std::cout << "Vertex distance from " << startVertex << " to " << endVertex << " (Incidence matrix): "
+                      << distance[endVertex] << "\nPath: ";
+            while (!path.empty()) {
+                if (path.size() > 1) {
+                    std::cout << path.top() << " -> ";
+                } else {
+                    std::cout << path.top();
+                }
+                path.pop();
             }
-            path.pop();
+            std::cout << "\n";
+        } else {
+            std::cout << "Path not specified" << std::endl;
         }
-        std::cout << "\n";
     }
 }

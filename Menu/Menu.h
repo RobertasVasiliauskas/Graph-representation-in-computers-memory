@@ -1,35 +1,89 @@
-#ifndef AIZO_2_WITH_STL_MENU_H
-#define AIZO_2_WITH_STL_MENU_H
+#ifndef MENU_H
+#define MENU_H
 
-#include <iostream>
 #include <vector>
-#include <algorithm>
-#include <fstream>
+#include <string>
 #include "../Graph/Graph.h"
-#include "../MyAlgorithms/MST/Kruskal.h"
-#include "../MyAlgorithms/MST/Prim.h"
-#include "../MyAlgorithms/SP/Djistra.h"
-#include "../MyAlgorithms/SP/FordBellman.h"
+#include "../Algorithms/MST/Kruskal.h"
+#include "../Algorithms/MST/Prim.h"
+#include "../Algorithms/SP/FordBellman.h"
+#include "../Utilities/TimerDecorator.h"
+#include "../Algorithms/SP/Djistra.h"
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <memory>
+
 
 class Menu {
 public:
+    Menu() : chooseSubMenu(0), subMenuNumber(0) {}
+
     void show();
-    void showFirstLayer();
-    void showSecondLayer();
+
 private:
+    /**
+     * Display the menu options
+     * @param options list of options
+     */
+    static void displayMenuOptions(const std::vector<std::string>& options);
 
-    int firstLayerNumbers[3] = {1, 2, 3};
-    int secondLayerNumbers[5] = {1, 2, 3, 4, 5};
+    /**
+     * Get user choice of menu options
+     * @param choice
+     */
+    static void getUserChoice(int& choice);
 
-    int temp[10] = {0};
-    int subMenuNumber = 0;
-    int chooseSubMenu = 0;
+    /**
+     * Display the first layer of menu
+     */
+    void showFirstLayer();
 
+    /**
+     * Display the second layer of menu
+     */
+    void showSecondLayer();
+
+    /**
+     * Function to load graph from specified file
+     */
+    void loadGraphFromFile();
+
+    /**
+     * Generate random graph
+     */
+    void generateRandomGraph();
+
+    /**
+     * Display graph as list and matrix
+     */
+    void displayGraph();
+
+    /**
+     * Run Prim algorithm for graph
+     */
+    void runPrimAlgorithm();
+
+    /**
+     * Run Kruskal algorithm for graph
+     */
+    void runKruskalAlgorithm();
+
+    /**
+     * Run djistra algorithm for graph
+     */
+    void runDijkstraAlgorithm();
+
+    /**
+     * Run Ford-Ballman algorithm for graph
+     */
+    void runBellmanFordAlgorithm();
+
+    int chooseSubMenu;
+    int subMenuNumber;
     std::string filename;
-    std::string stringTmp;
-
     Graph graph;
+    int temp[5] = {};
 };
 
-
-#endif //AIZO_2_WITH_STL_MENU_H
+#endif // MENU_H

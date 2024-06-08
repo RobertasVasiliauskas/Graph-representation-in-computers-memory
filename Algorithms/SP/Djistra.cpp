@@ -31,10 +31,11 @@ void Djistra::findShortestPathList(Graph &graph, int startVertex, int endVertex,
     }
 
     if (writing) {
-        std::cout << "Vertex Distance from " << startVertex << " to " << endVertex << " (Adjacency List): "
-                  << dist[endVertex] << "\n";
-
         if (dist[endVertex] != std::numeric_limits<int>::max()) {
+
+            std::cout << "Vertex Distance from " << startVertex << " to " << endVertex << " (Adjacency List): "
+                      << dist[endVertex] << "\n";
+
             std::vector<int> path;
             for (int at = endVertex; at != -1; at = prev[at])
                 path.push_back(at);
@@ -46,6 +47,9 @@ void Djistra::findShortestPathList(Graph &graph, int startVertex, int endVertex,
                 std::cout << path[i];
             }
             std::cout << "\n";
+        }
+        else{
+            std::cout << "No path specified" << std::endl;
         }
     }
 }
@@ -79,10 +83,11 @@ void Djistra::findShortestPathMatrix(Graph &graph, int startVertex, int endVerte
     }
 
     if (writing) {
-        std::cout << "Vertex Distance from " << startVertex << " to " << endVertex << " (Incidence Matrix): "
-                  << dist[endVertex] << "\n";
-
         if (dist[endVertex] != std::numeric_limits<int>::max()) {
+
+            std::cout << "Vertex Distance from " << startVertex << " to " << endVertex << " (Incidence Matrix): "
+                      << dist[endVertex] << "\n";
+
             std::vector<int> path;
             for (int at = endVertex; at != -1; at = prev[at])
                 path.push_back(at);
@@ -94,6 +99,9 @@ void Djistra::findShortestPathMatrix(Graph &graph, int startVertex, int endVerte
                 std::cout << path[i];
             }
             std::cout << "\n";
+        }
+        else {
+            std::cout << "No path specified" << std::endl;
         }
     }
 }

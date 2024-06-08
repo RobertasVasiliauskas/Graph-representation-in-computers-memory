@@ -2,10 +2,10 @@
 #define AIZO_2_WITH_STL_TIMERDECORATOR_H
 
 #include <memory>
-#include "../MyAlgorithms/MST/Prim.h"
-#include "../MyAlgorithms/MST/Kruskal.h"
-#include "../MyAlgorithms/SP/Djistra.h"
-#include "../MyAlgorithms/SP/FordBellman.h"
+#include "../Algorithms/MST/Prim.h"
+#include "../Algorithms/MST/Kruskal.h"
+#include "../Algorithms/SP/Djistra.h"
+#include "../Algorithms/SP/FordBellman.h"
 
 class PrimDecorator : public Prim {
 protected:
